@@ -1,13 +1,16 @@
-import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { PokemonList } from '../components';
+import { MESSAGES } from '../constants/Strings';
 
 export const ListPage = () => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <PokemonList />
+      <PokemonList
+        loadingMessage={MESSAGES.FETCHING_POKEMON_LIST}
+        errorMessage={MESSAGES.ERROR_FETCHING_POKEMON_LIST}
+      />
     </div>
   );
 };
