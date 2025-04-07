@@ -24,7 +24,7 @@ type PokemonListItemProps = {
 
 };
 
-function PokemonListItem({ pokemonDetails }: PokemonListItemProps) {
+export const PokemonListItem = ({ pokemonDetails }: PokemonListItemProps) => {
 
     const classes = useStyles();
 
@@ -104,5 +104,3 @@ const useStyles = createUseStyles(
     },
     { name: 'PokemonListItem' }
 );
-
-export default PokemonListItem

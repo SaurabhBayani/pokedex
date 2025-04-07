@@ -1,43 +1,67 @@
-import { Link, Outlet } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { createUseStyles } from 'react-jss';
-import { List } from '@material-ui/core';
+import { List, ListItem } from '@material-ui/core';
 import { useGetPokemons } from '../../hooks/useGetPokemons';
 import { MESSAGES } from '../../constants/Strings';
 
-import PokemonListItem from './PokemonListItem';
-
+import { PokemonListItem } from './PokemonListItem';
+import { SearchBar } from '../SearchBar';
 
 type PokemonListProps = {
-  loadingMessage?: string,
-  errorMessage?: string
-}
+  loadingMessage?: string;
+  errorMessage?: string;
+};
 
 export const PokemonList = ({
   loadingMessage = MESSAGES.LOADING,
-  errorMessage
-  ,
+  errorMessage,
 }: PokemonListProps) => {
   const classes = useStyles();
   const { pokemons, loading, error } = useGetPokemons();
 
+  const [filteredPokemons, setFilteredPokemons] = useState(pokemons);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    if (!searchTerm) {
+      setFilteredPokemons(pokemons);
+    } else {
+      const filtered = pokemons.filter((pkmn) =>
+        pkmn.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredPokemons(filtered);
+    }
+  }, [searchTerm, pokemons]);
+
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+  };
+
   return (
     <div className={classes.listingPage}>
-      {
-        loading && <div className={classes.loader}>{loadingMessage}</div>
-      }
+      <SearchBar
+        placeholder={MESSAGES.SEARCH_POKEMON}
+        onChange={handleSearchChange}
+      />
 
-      {
-        error && <div className={classes.loader}>{errorMessage || error.message}</div>
-      }
+      {loading && <div className={classes.loader}>{loadingMessage}</div>}
+      {error && <div className={classes.loader}>{errorMessage || error.message}</div>}
+
+      {!loading && !error && filteredPokemons.length === 0 && (
+        <div className={classes.noResult}>{MESSAGES.NO_POKEMON_FOUND}</div>
+      )}
 
       <List>
-        {pokemons.map((pkmn) => (
-          <Link to={`/pokemon/details/${pkmn.id}`} key={pkmn.id} className={classes.link}>
-            <PokemonListItem pokemonDetails={pkmn} />
-          </Link>
+        {filteredPokemons.map((pkmn) => (
+          <ListItem key={pkmn.id} className={classes.listItem}>
+            <Link to={`/pokemon/details/${pkmn.id}`} className={classes.link}>
+              <PokemonListItem pokemonDetails={pkmn} />
+            </Link>
+          </ListItem>
         ))}
       </List>
-    </div >
+    </div>
   );
 };
 
@@ -51,19 +75,35 @@ const useStyles = createUseStyles(
       boxSizing: 'border-box',
     },
     loader: {
+      fontSize: '18px',
+      color: '#888',
       height: '100%',
       textAlign: 'center',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
     },
+    listItem: {
+      padding: 0,
+    },
     link: {
+      display: 'block',
+      width: '100%',
       textDecoration: 'none',
       color: 'inherit',
       '&:hover': {
         textDecoration: 'none',
       },
-    }
+    },
+    noResult: {
+      fontSize: '18px',
+      color: '#888',
+      height: '100%',
+      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
   },
   { name: 'PokemonList' }
 );
