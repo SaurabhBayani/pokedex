@@ -59,19 +59,19 @@ export const PokemonList = ({
         {/* Error State */}
         {error && (
           <div className={classes.centerMessage}>
-            {errorMessage || error?.message || 'Something went wrong'}
+            {errorMessage || error?.message || MESSAGES.ERROR}
           </div>
         )}
 
         {/* No Pokémon Found */}
-        {!loading && !error && filteredPokemons.length === 0 && (
+        {!loading && !error && searchTerm && filteredPokemons.length === 0 && (
           <div className={classes.centerMessage}>{MESSAGES.NO_POKEMON_FOUND}</div>
         )}
 
         {/* Pokémon List */}
         {!loading && !error && filteredPokemons.length > 0 && (
           <List>
-            {filteredPokemons.map((pkmn) => (
+            {filteredPokemons.map((pkmn: any) => (
               <ListItem
                 key={pkmn.id}
                 button

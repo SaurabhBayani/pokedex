@@ -6,6 +6,7 @@ import { Nav } from '../components';
 import { ApolloProvider } from '@apollo/client';
 import { client } from './client';
 import { ListPage, Home, DetailsPage } from '../screens';
+import { MESSAGES } from '../constants/Strings';
 
 function App() {
   const classes = useStyles();
@@ -21,6 +22,7 @@ function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/pokemon" element={<ListPage />} />
                   <Route path="/pokemon/:name/:id" element={<DetailsPage />} />
+                  <Route path="*" element={<div className={classes.centerMessage}>{MESSAGES.PAGE_NOT_FOUND}</div>} />
                 </Routes>
               </div>
             </div>
@@ -53,6 +55,17 @@ const useStyles = createUseStyles(
       right: 0,
       bottom: 0,
       overflow: 'auto',
+    },
+    centerMessage: {
+      fontSize: '18px',
+      color: '#888',
+      marginTop: '20px',
+      textAlign: 'center',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   },
   { name: 'App' }
