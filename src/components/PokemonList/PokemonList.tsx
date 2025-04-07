@@ -1,7 +1,10 @@
-import React from 'react';
+import { Link, Outlet } from 'react-router-dom';
 import { createUseStyles } from 'react-jss';
+import { List } from '@material-ui/core';
 import { useGetPokemons } from '../../hooks/useGetPokemons';
 import { MESSAGES } from '../../constants/Strings';
+
+import PokemonListItem from './PokemonListItem';
 
 
 type PokemonListProps = {
@@ -18,7 +21,7 @@ export const PokemonList = ({
   const { pokemons, loading, error } = useGetPokemons();
 
   return (
-    <div className={classes.root}>
+    <div className={classes.listingPage}>
       {
         loading && <div className={classes.loader}>{loadingMessage}</div>
       }
@@ -27,17 +30,20 @@ export const PokemonList = ({
         error && <div className={classes.loader}>{errorMessage || error.message}</div>
       }
 
-      {pokemons.map((pkmn) => (
-        <div key={pkmn.id}>{pkmn.name}</div>
-      ))}
-
-    </div>
+      <List>
+        {pokemons.map((pkmn) => (
+          <Link to={`/pokemon/details/${pkmn.id}`} key={pkmn.id} className={classes.link}>
+            <PokemonListItem pokemonDetails={pkmn} />
+          </Link>
+        ))}
+      </List>
+    </div >
   );
 };
 
 const useStyles = createUseStyles(
   {
-    root: {
+    listingPage: {
       width: '100%',
       height: '100%',
       textAlign: 'center',
@@ -51,6 +57,13 @@ const useStyles = createUseStyles(
       justifyContent: 'center',
       alignItems: 'center',
     },
+    link: {
+      textDecoration: 'none',
+      color: 'inherit',
+      '&:hover': {
+        textDecoration: 'none',
+      },
+    }
   },
   { name: 'PokemonList' }
 );
