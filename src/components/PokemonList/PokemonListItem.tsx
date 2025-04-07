@@ -1,15 +1,5 @@
 import { createUseStyles } from 'react-jss';
-
-import {
-    ListItem,
-    ListItemAvatar,
-    Avatar,
-    ListItemText,
-    Typography,
-    Chip,
-} from '@material-ui/core';
-import { MESSAGES } from '../../constants/Strings';
-
+import { Typography } from '@material-ui/core';
 
 type Pokemon = {
     id: string;
@@ -21,86 +11,82 @@ type Pokemon = {
 
 type PokemonListItemProps = {
     pokemonDetails: Pokemon;
-
 };
 
 export const PokemonListItem = ({ pokemonDetails }: PokemonListItemProps) => {
-
     const classes = useStyles();
-
-    const { id, name, number, types = [], image } = pokemonDetails;
+    const { name, number, types = [], image } = pokemonDetails;
 
     return (
-        <ListItem key={id} alignItems="center" className={classes.pokemonListItem}>
+        <div className={classes.pokemonListItem}>
             <div className={classes.numberText}>#{number}</div>
+
             <div className={classes.imageWrapper}>
                 <img loading="lazy" src={image} alt={name} />
             </div>
+
             <div className={classes.infoWrapper}>
-                <Typography component="div" variant="h4" className={classes.header}>{name}</Typography>
-                <div className={classes.types}>{types.join(', ')}</div>
+                <Typography component="div" variant="h6" className={classes.name}>
+                    {name}
+                </Typography>
+                <Typography variant="body2" className={classes.types}>
+                    {types.join(', ')}
+                </Typography>
             </div>
-        </ListItem>
-    )
-}
+        </div>
+    );
+};
 
 const useStyles = createUseStyles(
     {
         pokemonListItem: {
-            marginBottom: '10px',
-            padding: '20px 10px 20px 10px',
-            border: '1px solid transparent',
-            borderRadius: '8px',
-            backgroundColor: '#333333',
+            width: '100%',
             display: 'flex',
-            justifyContent: 'space-between',
             alignItems: 'center',
-            textAlign: 'left',
+            backgroundColor: '#1e1e1e',
+            border: '1px solid #444',
+            borderRadius: '12px',
+            padding: '16px',
+            marginBottom: '12px',
+            transition: 'all 0.2s ease',
             '&:hover': {
+                transform: 'scale(1.02)',
+                backgroundColor: '#2a2a2a',
+                boxShadow: '0 4px 10px rgba(255, 255, 255, 0.1)',
                 cursor: 'pointer',
-                border: '1px solid #f0f0f0',
-                backgroundColor: '#666666',
-                boxShadow: '0 2px 4px #ffffff',
-
             },
+        },
+        numberText: {
+            fontSize: '18px',
+            color: '#f0f0f0',
+            fontFamily: '"Courier New", Courier, monospace',
+            marginRight: '16px',
         },
         imageWrapper: {
             width: '100px',
             height: '100px',
-            marginRight: '20px',
+            marginRight: '16px',
             '& img': {
                 width: '100%',
                 height: '100%',
                 borderRadius: '8px',
-                marginRight: '20px',
-                border: '1px solid #f0f0f0',
-                boxShadow: '0 2px 4px #000000',
-                objectFit: 'fill',
+                objectFit: 'cover',
+                border: '1px solid #ddd',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
             },
         },
-        header: {
-            alignSelf: 'flex-start',
-        },
-        numberText: {
-            fontSize: '20px',
-            color: '#efefef',
-            fontFamily: 'courier',
-            marginRight: '20px',
-        },
         infoWrapper: {
-            height: '100%',
-            width: '100%',
             display: 'flex',
-            alignSelf: 'flex-start',
-            alignItems: 'self-start',
             flexDirection: 'column',
-            justifyContent: 'space-between',
-            marginLeft: '10px',
+            justifyContent: 'center',
+        },
+        name: {
+            color: '#fff',
+            marginBottom: '8px',
         },
         types: {
-            marginTop: '20px',
-            marginLeft: '10px',
-        }
+            color: '#ccc',
+        },
     },
     { name: 'PokemonListItem' }
 );

@@ -2,7 +2,7 @@ import { createUseStyles } from 'react-jss';
 import { PokemonList } from '../components';
 import { MESSAGES } from '../constants/Strings';
 
-export const ListPage = () => {
+export const ListPage: React.FC = () => {
   const classes = useStyles();
 
   return (
@@ -19,7 +19,7 @@ const useStyles = createUseStyles(
   {
     root: {
       width: '100%',
-      height: '100%',
+      minHeight: '100vh',
     },
   },
   { name: 'ListPage' }

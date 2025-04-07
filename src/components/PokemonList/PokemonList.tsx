@@ -48,26 +48,42 @@ export const PokemonList = ({
       </div>
 
       <div className={classes.scrollArea}>
-        {loading && <div className={classes.centerMessage}>
-          <CircularProgress color="inherit" className={classes.loader} />
-          {loadingMessage}
-        </div>
-        }
-        {error && <div className={classes.centerMessage}>{errorMessage || error.message}</div>}
+        {/* Loading State */}
+        {loading && (
+          <div className={classes.centerMessage}>
+            <CircularProgress color="inherit" className={classes.loader} />
+            {loadingMessage}
+          </div>
+        )}
 
-        {!loading && !error && searchTerm && filteredPokemons.length === 0 && (
+        {/* Error State */}
+        {error && (
+          <div className={classes.centerMessage}>
+            {errorMessage || error?.message || 'Something went wrong'}
+          </div>
+        )}
+
+        {/* No Pokémon Found */}
+        {!loading && !error && filteredPokemons.length === 0 && (
           <div className={classes.centerMessage}>{MESSAGES.NO_POKEMON_FOUND}</div>
         )}
 
-        <List>
-          {filteredPokemons.map((pkmn: any) => (
-            <ListItem key={pkmn.id} className={classes.listItem}>
-              <Link to={`/pokemon/${pkmn.name}/${pkmn.id}`} className={classes.link}>
+        {/* Pokémon List */}
+        {!loading && !error && filteredPokemons.length > 0 && (
+          <List>
+            {filteredPokemons.map((pkmn) => (
+              <ListItem
+                key={pkmn.id}
+                button
+                component={Link}
+                to={`/pokemon/${pkmn.name}/${pkmn.id}`}
+                className={classes.listItem}
+              >
                 <PokemonListItem pokemonDetails={pkmn} />
-              </Link>
-            </ListItem>
-          ))}
-        </List>
+              </ListItem>
+            ))}
+          </List>
+        )}
       </div>
     </div>
   );
@@ -81,6 +97,7 @@ const useStyles = createUseStyles(
       height: '100vh',
       padding: '16px',
       boxSizing: 'border-box',
+      fontFamily: `'Roboto', 'Segoe UI', sans-serif`,
     },
     searchBarWrapper: {
       marginBottom: '12px',
@@ -97,24 +114,19 @@ const useStyles = createUseStyles(
       textAlign: 'center',
       height: '100%',
       display: 'flex',
+      flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
     },
     listItem: {
       padding: 0,
-    },
-    link: {
-      display: 'block',
-      width: '100%',
-      textDecoration: 'none',
-      color: 'inherit',
       '&:hover': {
-        textDecoration: 'none',
+        backgroundColor: '#f9f9f9',
       },
     },
     loader: {
-      marginRight: '10px',
-    }
+      marginBottom: '12px',
+    },
   },
   { name: 'PokemonList' }
 );
