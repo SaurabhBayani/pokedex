@@ -40,27 +40,31 @@ export const PokemonList = ({
 
   return (
     <div className={classes.listingPage}>
-      <SearchBar
-        placeholder={MESSAGES.SEARCH_POKEMON}
-        onChange={handleSearchChange}
-      />
+      <div className={classes.searchBarWrapper}>
+        <SearchBar
+          placeholder={MESSAGES.SEARCH_POKEMON}
+          onChange={handleSearchChange}
+        />
+      </div>
 
-      {loading && <div className={classes.loader}>{loadingMessage}</div>}
-      {error && <div className={classes.loader}>{errorMessage || error.message}</div>}
+      <div className={classes.scrollArea}>
+        {loading && <div className={classes.loader}>{loadingMessage}</div>}
+        {error && <div className={classes.loader}>{errorMessage || error.message}</div>}
 
-      {!loading && !error && filteredPokemons.length === 0 && (
-        <div className={classes.noResult}>{MESSAGES.NO_POKEMON_FOUND}</div>
-      )}
+        {!loading && !error && filteredPokemons.length === 0 && (
+          <div className={classes.noResult}>{MESSAGES.NO_POKEMON_FOUND}</div>
+        )}
 
-      <List>
-        {filteredPokemons.map((pkmn) => (
-          <ListItem key={pkmn.id} className={classes.listItem}>
-            <Link to={`/pokemon/details/${pkmn.id}`} className={classes.link}>
-              <PokemonListItem pokemonDetails={pkmn} />
-            </Link>
-          </ListItem>
-        ))}
-      </List>
+        <List>
+          {filteredPokemons.map((pkmn) => (
+            <ListItem key={pkmn.id} className={classes.listItem}>
+              <Link to={`/pokemon/details/${pkmn.id}`} className={classes.link}>
+                <PokemonListItem pokemonDetails={pkmn} />
+              </Link>
+            </ListItem>
+          ))}
+        </List>
+      </div>
     </div>
   );
 };
@@ -68,15 +72,21 @@ export const PokemonList = ({
 const useStyles = createUseStyles(
   {
     listingPage: {
-      width: '100%',
-      height: '100%',
-      textAlign: 'center',
-      padding: '32px',
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100vh',
+      padding: '16px',
       boxSizing: 'border-box',
     },
+    searchBarWrapper: {
+      marginBottom: '12px',
+      flexShrink: 0,
+    },
+    scrollArea: {
+      flexGrow: 1,
+      overflowY: 'auto',
+    },
     loader: {
-      fontSize: '18px',
-      color: '#888',
       height: '100%',
       textAlign: 'center',
       display: 'flex',
@@ -98,11 +108,8 @@ const useStyles = createUseStyles(
     noResult: {
       fontSize: '18px',
       color: '#888',
-      height: '100%',
+      marginTop: '20px',
       textAlign: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
     },
   },
   { name: 'PokemonList' }
