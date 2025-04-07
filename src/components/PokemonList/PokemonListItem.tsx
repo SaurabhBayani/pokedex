@@ -50,7 +50,6 @@ const useStyles = createUseStyles(
             marginBottom: '12px',
             transition: 'all 0.2s ease',
             '&:hover': {
-                transform: 'scale(1.02)',
                 backgroundColor: '#2a2a2a',
                 boxShadow: '0 4px 10px rgba(255, 255, 255, 0.1)',
                 cursor: 'pointer',
