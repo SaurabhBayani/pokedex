@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { createUseStyles } from 'react-jss';
-import { List, ListItem } from '@material-ui/core';
+import { List, ListItem, CircularProgress } from '@material-ui/core';
 import { useGetPokemons } from '../../hooks/useGetPokemons';
 import { MESSAGES } from '../../constants/Strings';
 
@@ -20,8 +20,8 @@ export const PokemonList = ({
   const classes = useStyles();
   const { pokemons, loading, error } = useGetPokemons();
 
-  const [filteredPokemons, setFilteredPokemons] = useState(pokemons);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredPokemons, setFilteredPokemons] = useState<any>(pokemons);
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
   useEffect(() => {
     if (!searchTerm) {
@@ -48,17 +48,21 @@ export const PokemonList = ({
       </div>
 
       <div className={classes.scrollArea}>
-        {loading && <div className={classes.loader}>{loadingMessage}</div>}
-        {error && <div className={classes.loader}>{errorMessage || error.message}</div>}
+        {loading && <div className={classes.centerMessage}>
+          <CircularProgress color="inherit" className={classes.loader} />
+          {loadingMessage}
+        </div>
+        }
+        {error && <div className={classes.centerMessage}>{errorMessage || error.message}</div>}
 
-        {!loading && !error && filteredPokemons.length === 0 && (
-          <div className={classes.noResult}>{MESSAGES.NO_POKEMON_FOUND}</div>
+        {!loading && !error && searchTerm && filteredPokemons.length === 0 && (
+          <div className={classes.centerMessage}>{MESSAGES.NO_POKEMON_FOUND}</div>
         )}
 
         <List>
-          {filteredPokemons.map((pkmn) => (
+          {filteredPokemons.map((pkmn: any) => (
             <ListItem key={pkmn.id} className={classes.listItem}>
-              <Link to={`/pokemon/details/${pkmn.id}`} className={classes.link}>
+              <Link to={`/pokemon/${pkmn.name}/${pkmn.id}`} className={classes.link}>
                 <PokemonListItem pokemonDetails={pkmn} />
               </Link>
             </ListItem>
@@ -86,9 +90,12 @@ const useStyles = createUseStyles(
       flexGrow: 1,
       overflowY: 'auto',
     },
-    loader: {
-      height: '100%',
+    centerMessage: {
+      fontSize: '18px',
+      color: '#888',
+      marginTop: '20px',
       textAlign: 'center',
+      height: '100%',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -105,12 +112,9 @@ const useStyles = createUseStyles(
         textDecoration: 'none',
       },
     },
-    noResult: {
-      fontSize: '18px',
-      color: '#888',
-      marginTop: '20px',
-      textAlign: 'center',
-    },
+    loader: {
+      marginRight: '10px',
+    }
   },
   { name: 'PokemonList' }
 );

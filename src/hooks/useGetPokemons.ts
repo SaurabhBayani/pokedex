@@ -15,7 +15,7 @@ export type PokemonOption = {
   label: Pokemon['name'];
   number: Pokemon['number'];
   types: Pokemon['types'];
-  imageURL: Pokemon['image'];
+  image: Pokemon['image'];
 };
 
 export const GET_POKEMONS = gql`
@@ -46,7 +46,7 @@ export const useGetPokemons = () => {
         label: p.name,
         number: p.number,
         types: p.types,
-        imageURL: p.image,
+        image: p.image,
       })),
     [pokemons]
   );

@@ -18,7 +18,7 @@ export const SearchBar = ({
 }: SearchBarProps) => {
 
     const classes = useStyles();
-    const [searchString, setSearchString] = useState('');
+    const [searchString, setSearchString] = useState<string>('');
 
     const handleTextChange = useCallback(
         debounce((value: string) => {

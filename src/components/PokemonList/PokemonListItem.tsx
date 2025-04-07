@@ -37,7 +37,7 @@ export const PokemonListItem = ({ pokemonDetails }: PokemonListItemProps) => {
                 <img loading="lazy" src={image} alt={name} />
             </div>
             <div className={classes.infoWrapper}>
-                <Typography component="div" variant="h3" className={classes.header}>{name}</Typography>
+                <Typography component="div" variant="h4" className={classes.header}>{name}</Typography>
                 <div className={classes.types}>{types.join(', ')}</div>
             </div>
         </ListItem>
@@ -65,8 +65,8 @@ const useStyles = createUseStyles(
             },
         },
         imageWrapper: {
-            width: '150px',
-            height: '150px',
+            width: '100px',
+            height: '100px',
             marginRight: '20px',
             '& img': {
                 width: '100%',
